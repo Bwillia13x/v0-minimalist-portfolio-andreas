@@ -60,7 +60,7 @@ export default function Home() {
           className="min-h-screen flex items-center opacity-0"
         >
           <div className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]">
-            <img src="/hero-dark-gold.svg" alt="" className="w-full h-full object-cover opacity-60" />
+            <img src="/hero-dark-gold.svg" alt="PrairieSignal AI Enablement background" className="w-full h-full object-cover opacity-60" />
           </div>
           <div className="grid lg:grid-cols-5 gap-12 sm:gap-16 w-full">
             <div className="lg:col-span-3 space-y-6 sm:space-y-8">

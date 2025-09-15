@@ -39,7 +39,7 @@ export default function NewSitePage() {
   return (
     <div className="min-h-screen bg-background text-foreground relative">
       <div className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]">
-        <img src="/hero-dark-gold-2.svg" alt="" className="w-full h-full object-cover opacity-60" />
+        <img src="/hero-dark-gold-2.svg" alt="PrairieSignal background design" className="w-full h-full object-cover opacity-60" />
       </div>
 
       <nav className="fixed left-8 top-1/2 -translate-y-1/2 z-10 hidden lg:block">
