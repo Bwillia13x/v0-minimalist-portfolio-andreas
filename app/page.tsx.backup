@@ -67,7 +67,7 @@ export default function Home() {
               <div className="space-y-3 sm:space-y-2">
                 <div className="text-sm text-muted-foreground font-mono tracking-wider">PRAIRIESIGNAL / 2025</div>
                 <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight">
-                  AI That Never Sleeps
+                  AI that works like staff
                 </h1>
               </div>
 
@@ -278,38 +278,38 @@ export default function Home() {
                     time: "20 min call"
                   },
                 ].map((card, index) => (
-                  <Link
-                    key={index}
-                    href={card.url}
-                    className="group block p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
-                  >
-                    <div className="space-y-4">
-                      <div className="flex items-start justify-between">
-                        <h3 className="text-lg sm:text-xl font-medium group-hover:text-muted-foreground transition-colors duration-300">
-                          {card.title}
-                        </h3>
-                        <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
-                          {card.type}
-                        </span>
-                      </div>
-                      <p className="text-muted-foreground leading-relaxed">{card.excerpt}</p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                          <span>Open</span>
-                          <svg
-                            className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                          </svg>
-                        </div>
-                        <div className="text-xs text-muted-foreground">{card.time}</div>
-                      </div>
+                <Link
+                  key={index}
+                  href={card.url}
+                  className="group block p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-start justify-between">
+                      <h3 className="text-lg sm:text-xl font-medium group-hover:text-muted-foreground transition-colors duration-300">
+                        {card.title}
+                      </h3>
+                      <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
+                        {card.type}
+                      </span>
                     </div>
-                  </Link>
-                ))}
+                    <p className="text-muted-foreground leading-relaxed">{card.excerpt}</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                        <span>Open</span>
+                        <svg
+                          className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </div>
+                      <div className="text-xs text-muted-foreground">{card.time}</div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
           </div>
