@@ -35,6 +35,15 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --brand-gold: #E8D19A;
+
+  /* PrairieSignal Design Tokens */
+  --ps-bg: #0B0B0F;
+  --ps-surface: #121219;
+  --ps-text: #EAEAF2;
+  --ps-muted: #A1A1B3;
+  --ps-border: #232330;
+  --ps-primary: #6F69F6;
+  --ps-primary-weak: #A06EF6;
 }
 
 .dark {
@@ -71,6 +80,15 @@
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
   --brand-gold: #BFA15A;
+
+  /* PrairieSignal Dark Theme Tokens */
+  --ps-bg: #0B0B0F;
+  --ps-surface: #121219;
+  --ps-text: #EAEAF2;
+  --ps-muted: #A1A1B3;
+  --ps-border: #232330;
+  --ps-primary: #6F69F6;
+  --ps-primary-weak: #A06EF6;
 }
 
 @theme inline {

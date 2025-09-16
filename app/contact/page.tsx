@@ -56,7 +56,7 @@ export default function ContactPage() {
       <main className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16">
         <section
           id="contact"
-          ref={(el) => (sectionsRef.current[0] = el)}
+          ref={(el) => { sectionsRef.current[0] = el; }}
           className="min-h-screen py-20 sm:py-32 opacity-0"
         >
           <div className="space-y-12 sm:space-y-16">

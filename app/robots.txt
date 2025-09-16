@@ -1,8 +1,6 @@
-export default function robots() {
-  return {
-    rules: [{ userAgent: '*', allow: '/' }],
-    sitemap: 'https://prairiesignal.ca/sitemap.xml',
-  }
-}
+User-agent: *
+Allow: /
+
+Sitemap: https://prairiesignal.ca/sitemap.xml
 
 

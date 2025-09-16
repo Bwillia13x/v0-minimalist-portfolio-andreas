@@ -1,13 +1,14 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import { SiteHeader } from "@/components/site-header"
+import { Analytics } from "@/components/Analytics"
 
-const geist = Geist({
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-geist",
+  variable: "--font-inter",
 })
 
 export const metadata: Metadata = {
@@ -18,6 +19,10 @@ export const metadata: Metadata = {
   authors: [{ name: "PrairieSignal" }],
   creator: "PrairieSignal",
   publisher: "PrairieSignal",
+  icons: {
+    icon: '/placeholder-logo.svg',
+    shortcut: '/placeholder-logo.svg',
+  },
   formatDetection: {
     email: false,
     address: false,
@@ -72,10 +77,48 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geist.variable}`}>
+    <html lang="en" className={`${inter.variable}`}>
       <body className="font-sans antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[var(--ps-primary)] text-white px-4 py-2 rounded-md z-50"
+        >
+          Skip to main content
+        </a>
         <SiteHeader />
-        {children}
+        <main id="main-content">
+          {children}
+        </main>
+
+        <Analytics />
+
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "PrairieSignal",
+              "url": "https://prairiesignal.ca",
+              "description": "AI-powered automation solutions for service businesses",
+              "contactPoint": [{
+                "@type": "ContactPoint",
+                "email": "hello@prairiesignal.ca",
+                "contactType": "customer support"
+              }],
+              "sameAs": [
+                "https://www.linkedin.com/company/prairiesignal"
+              ],
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Calgary",
+                "addressRegion": "AB",
+                "addressCountry": "CA"
+              }
+            })
+          }}
+        />
       </body>
     </html>
   )

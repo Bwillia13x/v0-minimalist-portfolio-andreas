@@ -1,504 +1,444 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
+import { Section } from "@/components/Section"
+import { ROICalculator } from "@/components/ROICalculator"
+import { AssistantCard } from "@/components/AssistantCard"
+import { StatusBadge } from "@/components/StatusBadge"
+import { TimelineBand } from "@/components/TimelineBand"
+import { PitchSubnav } from "@/components/PitchSubnav"
+import { trackEvent } from "@/components/Analytics"
+import { pitchData } from "@/data/pitch"
+import { Badge } from "@/components/ui/badge"
 
 export default function AndreasPitchPage() {
   const [isDark, setIsDark] = useState(true)
-  const [activeSection, setActiveSection] = useState("")
-  const sectionsRef = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark)
   }, [isDark])
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-in-up")
-            setActiveSection(entry.target.id)
-          }
-        })
-      },
-      { threshold: 0.3, rootMargin: "0px 0px -20% 0px" },
-    )
-
-    sectionsRef.current.forEach((section) => {
-      if (section) observer.observe(section)
-    })
-
-    return () => observer.disconnect()
-  }, [])
-
   const toggleTheme = () => {
     setIsDark(!isDark)
   }
 
+  const handleCTAClick = (cta: string) => {
+    if (typeof window !== "undefined" && window.plausible) {
+      trackEvent("pitch_cta_clicked", { cta, location: "hero" })
+    }
+  }
+
+  // JSON-LD Structured Data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "Andreas & Co Barbershop AI Enablement Proposal",
+    "description": "A comprehensive AI-powered growth plan for Andreas & Co Barbershop including website refresh, marketing automation, and AI assistants",
+    "author": {
+      "@type": "Organization",
+      "name": "PrairieSignal",
+      "url": "https://prairiesignal.ca"
+    },
+    "about": {
+      "@type": "LocalBusiness",
+      "name": "Andreas & Co Barbershop",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Calgary",
+        "addressRegion": "AB",
+        "addressCountry": "CA"
+      }
+    },
+    "hasPart": [
+      {
+        "@type": "HowTo",
+        "name": "Getting started with PrairieSignal",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Discovery Call",
+            "text": "Book a 45–60 minute discovery session to discuss goals and constraints"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Project Scoping",
+            "text": "Receive detailed plan with timeline, budget bands, and success metrics"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Kickoff Sprint",
+            "text": "Begin implementation with focused 1–2 week website and marketing sprint"
+          }
+        ]
+      }
+    ],
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Pilot B - Operations Boost",
+        "price": pitchData.priceBands.pilotB,
+        "priceCurrency": "CAD",
+        "description": "Full Command Center spreadsheet setup, 3 automation workflows, rebooking SMS system"
+      },
+      {
+        "@type": "Offer",
+        "name": "Pilot C - Pro Implementation",
+        "price": pitchData.priceBands.pilotC,
+        "priceCurrency": "CAD",
+        "description": "Everything in Pilot B plus custom team interface and advanced integrations"
+      }
+    ]
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground relative">
-      <nav className="fixed left-8 top-1/2 -translate-y-1/2 z-10 hidden lg:block">
-        <div className="flex flex-col gap-4">
-          {["summary", "roadmap", "website", "marketing", "enablement", "next"].map((section) => (
-            <button
-              key={section}
-              onClick={() => document.getElementById(section)?.scrollIntoView({ behavior: "smooth" })}
-              className={`w-2 h-8 rounded-full transition-all duration-500 ${
-                activeSection === section ? "bg-primary shadow-[0_0_0_2px_rgba(122,90,248,0.3)]" : "bg-muted-foreground/30 hover:bg-muted-foreground/60"
-              }`}
-              aria-label={`Navigate to ${section}`}
-            />
-          ))}
-        </div>
-      </nav>
+      {/* Accessibility skip link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[var(--ps-primary)] text-white px-4 py-2 rounded-md z-50"
+      >
+        Skip to main content
+      </a>
 
-      <main className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16">
-        <section
-          id="summary"
-          ref={(el) => (sectionsRef.current[0] = el)}
-          className="min-h-screen py-20 sm:py-32 opacity-0"
-        >
-          <div className="space-y-12 sm:space-y-16">
-            <header className="space-y-6 sm:space-y-8">
-              <div className="flex items-center justify-between gap-4">
+      {/* Sticky sub-navigation */}
+      <PitchSubnav />
+
+      <main id="main-content" className="max-w-screen-lg mx-auto px-4 md:px-6">
+        {/* Hero Header */}
+        <section className="min-h-screen py-20 sm:py-32 flex items-center">
+          <div className="space-y-8">
+            <div className="flex items-center justify-between">
                 <Link
                   href="/"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm text-[var(--ps-muted)] hover:text-[var(--ps-text)] transition-colors"
                 >
                   ← Back to home
                 </Link>
-                <div className="text-xs text-muted-foreground font-mono">PrairieSignal</div>
-              </div>
+              <div className="text-xs text-[var(--ps-muted)] font-mono">PrairieSignal</div>
+            </div>
 
-              <div className="text-sm text-muted-foreground font-mono tracking-wider">PRAIRIESIGNAL / ANDREAS & CO</div>
-              <h1 className="text-4xl sm:text-5xl font-light tracking-tight">
+            <div className="space-y-6">
+              <div className="text-sm text-[var(--ps-muted)] font-mono tracking-wider">
+                PRAIRIESIGNAL / ANDREAS & CO
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-light tracking-tight text-[var(--ps-text)]">
                 Andreas & Co Barbershop
               </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-                A concise, AI-enabled growth plan focused on three angles of attack: 1) Modern
-                website refresh, 2) AI-enabled marketing strategy, and 3) AI enablement for
-                operations and quality of life. Designed and presented by PrairieSignal.
+              <p className="text-lg sm:text-xl text-[var(--ps-muted)] leading-relaxed max-w-2xl">
+                A concise growth plan: modern website refresh, AI-enabled marketing, and AI assistants for operations and quality of life.
               </p>
-              <div className="flex flex-wrap gap-2 pt-4 text-sm">
-                <Link href="#roadmap" className="bg-primary text-primary-foreground rounded-md border border-transparent px-3 py-2 hover:bg-primary/90 transition-colors">View Roadmap</Link>
-                <Link href="/contact" className="rounded-md border border-border px-3 py-2 hover:border-[color:var(--brand-gold)] transition-colors">Book Discovery Call</Link>
-              </div>
-            </header>
-
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">WHAT WE'LL BUILD TOGETHER</div>
-              <div className="grid gap-6 sm:gap-8 lg:grid-cols-3">
-                {[
-                  {
-                    number: "01",
-                    title: "Modern Website That Converts",
-                    description: "A beautiful, fast website that turns visitors into paying customers. Think: easy booking buttons everywhere, stunning photos of your work, and clear information about your services and prices.",
-                    features: ["One-click booking from any page", "Mobile-friendly design", "Professional photography", "Clear pricing and services"],
-                    outcome: "40% more online bookings within 3 months"
-                  },
-                  {
-                    number: "02",
-                    title: "Smart Marketing That Works",
-                    description: "Automated systems that handle the marketing busywork so you can focus on great haircuts. Social media posts, review responses, and customer outreach that happens on autopilot.",
-                    features: ["Weekly social media content", "Automatic review replies", "Email newsletters", "Google My Business optimization"],
-                    outcome: "25% increase in new customers"
-                  },
-                  {
-                    number: "03",
-                    title: "AI Assistants That Help",
-                    description: "Friendly AI helpers that handle routine tasks like answering common questions, reminding clients about appointments, and giving you insights about your business performance.",
-                    features: ["24/7 customer chat assistant", "Automated appointment reminders", "Weekly business summaries", "Smart inventory alerts"],
-                    outcome: "5 hours saved per week"
-                  }
-                ].map((angle, index) => (
-                  <div
-                    key={index}
-                    className="group p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
-                  >
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="text-2xl font-light text-primary">{angle.number}</div>
-                        <h3 className="text-lg sm:text-xl font-medium group-hover:text-muted-foreground transition-colors duration-300">
-                          {angle.title}
-                        </h3>
-                      </div>
-                      <p className="text-muted-foreground leading-relaxed">{angle.description}</p>
-                      <div className="space-y-2">
-                        {angle.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                            {feature}
-                          </div>
-                        ))}
-                      </div>
-                      {angle.outcome && (
-                        <div className="pt-3 border-t border-border/50">
-                          <div className="text-xs text-primary font-medium">Expected Result:</div>
-                          <div className="text-sm text-muted-foreground">{angle.outcome}</div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
+              <div className="flex flex-wrap gap-3 pt-4">
+                <Link
+                  href="#roadmap"
+                  className="bg-[var(--ps-primary)] text-white rounded-md px-4 py-2 hover:bg-[var(--ps-primary-weak)] transition-colors"
+                >
+                  View Roadmap
+                </Link>
+                <Link
+                  href="/contact"
+                  className="border border-[var(--ps-border)] rounded-md px-4 py-2 hover:bg-[var(--ps-surface)] transition-colors"
+                  onClick={() => handleCTAClick("consult")}
+                >
+                  Book Discovery Call
+                </Link>
               </div>
             </div>
           </div>
         </section>
 
-        <section
-          id="roadmap"
-          ref={(el) => (sectionsRef.current[1] = el)}
-          className="min-h-screen py-20 sm:py-32 opacity-0"
-        >
-          <div className="space-y-12 sm:space-y-16">
-            <div className="space-y-6 sm:space-y-8">
-              <h2 className="text-3xl sm:text-4xl font-light">Implementation Roadmap</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                A structured approach to transform Andreas & Co with AI-enabled growth strategies.
+        {/* Executive Summary */}
+        <Section id="summary" title="Executive Summary">
+          <div className="grid gap-8 lg:grid-cols-4">
+            {/* Scope Card */}
+            <div className="p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+              <h3 className="font-medium mb-2">Scope</h3>
+              <p className="text-sm text-[var(--ps-muted)]">
+                Website refresh + AI-enabled marketing + AI assistants
               </p>
             </div>
 
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">PHASED APPROACH</div>
+            {/* Timeline Card */}
+            <div className="p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+              <h3 className="font-medium mb-2">Timeline</h3>
+              <p className="text-sm text-[var(--ps-muted)]">
+                4–6 weeks total (Phase 0–2)
+              </p>
+              <div className="mt-2 w-full bg-[var(--ps-border)] rounded-full h-2">
+                <div className="bg-[var(--ps-primary)] h-2 rounded-full w-1/6"></div>
+              </div>
+            </div>
+
+            {/* Price Band Card */}
+            <div className="p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+              <h3 className="font-medium mb-2">Est. Cost</h3>
+              <p className="text-sm text-[var(--ps-muted)]">
+                Pilot B ${pitchData.priceBands.pilotB.toLocaleString()} → Pilot C ${pitchData.priceBands.pilotC.toLocaleString()}
+              </p>
+              <p className="text-xs text-[var(--ps-muted)] mt-1">
+                Pass-through at cost (${pitchData.priceBands.passthroughRange[0]}–${pitchData.priceBands.passthroughRange[1]}/mo)
+              </p>
+            </div>
+
+            {/* Outcomes Card */}
+            <div className="p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+              <h3 className="font-medium mb-2">Outcomes</h3>
+              <p className="text-sm text-[var(--ps-muted)]">
+                Fewer no-shows, steadier bookings, faster responses, and clear Monday-morning insights.
+              </p>
+            </div>
+          </div>
+
+          {/* ROI Calculator */}
+          <div className="mt-8">
+            <ROICalculator />
+          </div>
+
+          {/* Assumptions & Constraints */}
+          <div className="mt-8 p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+            <h3 className="font-medium mb-3">Assumptions & Constraints</h3>
+            <ul className="space-y-2 text-sm text-[var(--ps-muted)]">
+              {pitchData.assumptions.map((assumption, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className="text-[var(--ps-primary)] mt-1">•</span>
+                  {assumption}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* CTAs */}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/contact"
+              className="bg-[var(--ps-primary)] text-white rounded-md px-4 py-2 hover:bg-[var(--ps-primary-weak)] transition-colors"
+              onClick={() => handleCTAClick("consult")}
+            >
+              Book Discovery Call
+            </Link>
+            <Link
+              href="/pricing"
+              className="border border-[var(--ps-border)] rounded-md px-4 py-2 hover:bg-[var(--ps-surface)] transition-colors"
+              onClick={() => handleCTAClick("pricing")}
+            >
+              View Pricing Options
+            </Link>
+            <Link
+              href="/pitch/print"
+              className="border border-[var(--ps-border)] rounded-md px-4 py-2 hover:bg-[var(--ps-surface)] transition-colors"
+              onClick={() => {
+                handleCTAClick("download-pdf");
+                if (typeof window !== "undefined" && window.plausible) {
+                  trackEvent("pitch_pdf_downloaded", { route: "/pitch/print" });
+                }
+              }}
+            >
+              Download PDF
+            </Link>
+          </div>
+        </Section>
+
+        {/* Roadmap */}
+        <Section id="roadmap" title="Implementation Roadmap">
+          <p className="text-lg text-[var(--ps-muted)] leading-relaxed max-w-2xl">
+            A structured approach to transform Andreas & Co with AI-enabled growth strategies.
+          </p>
+
+          {/* Timeline Band */}
+          <TimelineBand />
+
+          {/* Phase Details */}
               <div className="space-y-6">
-                {[
-                  {
-                    phase: "Phase 0 — Discovery",
-                    duration: "0.5–1 week",
-                    title: "Foundation & Assessment",
-                    description: "Fast baseline audit and goal clarification",
-                    tasks: [
-                      "Site, SEO, analytics, and booking flow audit",
-                      "Goal clarification: utilization, bookings mix, LTV",
-                      "Success metrics and tracking plan definition"
-                    ]
-                  },
-                  {
-                    phase: "Phase 1 — Website",
-                    duration: "1–2 weeks",
-                    title: "Digital Presence Refresh",
-                    description: "Modern, conversion-focused website implementation",
-                    tasks: [
-                      "Conversion-focused information architecture",
-                      "Mobile-first design with booking CTAs",
-                      "Local SEO basics and performance optimization"
-                    ]
-                  },
-                  {
-                    phase: "Phase 2 — Marketing",
-                    duration: "2–4 weeks",
-                    title: "AI-Enabled Growth",
-                    description: "Smart marketing automation and content systems",
-                    tasks: [
-                      "Content calendar and UGC motion",
-                      "Email/SMS automation workflows",
-                      "Local SEO enhancements and paid experiments"
-                    ]
-                  },
-                  {
-                    phase: "Phase 3 — AI Enablement",
-                    duration: "Ongoing",
-                    title: "Operational Excellence",
-                    description: "AI assistants and operational insights",
-                    tasks: [
-                      "AI assistants for FAQs and review responses",
-                      "Operational dashboards and insights",
-                      "Monthly optimization and staff training"
-                    ]
-                  }
-                ].map((phase, index) => (
-                  <div
-                    key={index}
-                    className="group grid lg:grid-cols-12 gap-6 sm:gap-8 p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
-                  >
+            {pitchData.phases.map((phase, index) => (
+              <div
+                key={phase.id}
+                className="group p-6 border border-[var(--ps-border)] rounded-lg hover:border-[var(--ps-primary)]/50 transition-all duration-500 hover:shadow-lg bg-[var(--ps-surface)]"
+              >
+                <div className="grid lg:grid-cols-12 gap-6">
                     <div className="lg:col-span-3">
-                      <div className="text-sm text-primary font-mono">{phase.phase}</div>
-                      <div className="text-lg font-medium mt-1">{phase.duration}</div>
+                    <div className="text-sm text-[var(--ps-primary)] font-mono uppercase">
+                      {phase.id === 'discovery' ? 'Phase 0' : `Phase ${index}`} — {phase.title}
                     </div>
-                    <div className="lg:col-span-6 space-y-3">
-                      <h3 className="text-lg sm:text-xl font-medium group-hover:text-muted-foreground transition-colors duration-300">
-                        {phase.title}
-                      </h3>
-                      <p className="text-muted-foreground leading-relaxed">{phase.description}</p>
+                    <div className="text-lg font-medium mt-1 text-[var(--ps-text)]">{phase.duration}</div>
+                    <div className="mt-2">
+                      <StatusBadge status={phase.status || 'planned'} />
                     </div>
-                    <div className="lg:col-span-3 space-y-2">
-                      {phase.tasks.map((task, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                          {task}
+                  </div>
+                  <div className="lg:col-span-6 space-y-3">
+                    <p className="text-[var(--ps-muted)] leading-relaxed">{phase.goal}</p>
+                  </div>
+                  <div className="lg:col-span-3 space-y-3">
+                    <div className="text-sm font-medium text-[var(--ps-text)]">Deliverables</div>
+                    {phase.deliverables.map((deliverable, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-sm text-[var(--ps-muted)]">
+                        <div className="w-1.5 h-1.5 bg-[var(--ps-primary)] rounded-full mt-1.5 flex-shrink-0"></div>
+                        {deliverable}
                         </div>
                       ))}
+                    <div className="pt-2 border-t border-[var(--ps-border)]/50">
+                      <div className="text-xs font-medium text-[var(--ps-text)]">Exit Criteria</div>
+                      <div className="text-xs text-[var(--ps-muted)] mt-1">{phase.exit}</div>
                     </div>
+                    {phase.deps && (
+                      <div className="pt-2 border-t border-[var(--ps-border)]/50">
+                        <div className="text-xs font-medium text-[var(--ps-text)]">Dependencies</div>
+                        <div className="text-xs text-[var(--ps-muted)] mt-1">{phase.deps.join(', ')}</div>
+                      </div>
+                    )}
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        </section>
+        </Section>
 
-        <section
-          id="website"
-          ref={(el) => (sectionsRef.current[2] = el)}
-          className="min-h-screen py-20 sm:py-32 opacity-0"
-        >
-          <div className="space-y-12 sm:space-y-16">
-            <div className="space-y-6 sm:space-y-8">
-              <h2 className="text-3xl sm:text-4xl font-light">Website Refresh</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+        {/* Website Refresh */}
+        <Section id="website" title="Website Refresh">
+          <p className="text-lg text-[var(--ps-muted)] leading-relaxed max-w-2xl">
                 Goals: increase booking conversions, improve first impression, and clarify services. Keep it clean, fast, and easy to maintain.
               </p>
-            </div>
 
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">CORE PAGES & FEATURES</div>
-              <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
-                {[
-                  {
-                    title: "Homepage & Brand Story",
-                    description: "Hero section with booking CTA, brand story, and social proof",
-                    features: ["Hero booking CTA", "Brand narrative", "Trust indicators", "Mobile optimization"]
-                  },
-                  {
-                    title: "Services & Pricing",
-                    description: "Clear service offerings with prominent booking links",
-                    features: ["Service packages", "Pricing transparency", "Booking integration", "Seasonal offers"]
-                  },
-                  {
-                    title: "Team & Gallery",
-                    description: "Staff profiles, work gallery, and Instagram integration",
-                    features: ["Team profiles", "Before/after gallery", "Instagram feed", "Staff specialties"]
-                  },
-                  {
-                    title: "Location & Contact",
-                    description: "Complete location info, hours, and contact methods",
-                    features: ["Google Maps integration", "Parking info", "Contact forms", "Business hours"]
-                  }
-                ].map((page, index) => (
+          {/* Core Pages */}
+          <div className="grid gap-6 lg:grid-cols-2">
+            {pitchData.website.core.map((page, index) => (
                   <div
                     key={index}
-                    className="group p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
+                className="group p-6 border border-[var(--ps-border)] rounded-lg hover:border-[var(--ps-primary)]/50 transition-all duration-500 hover:shadow-lg bg-[var(--ps-surface)]"
                   >
-                    <div className="space-y-4">
-                      <h3 className="text-lg sm:text-xl font-medium group-hover:text-muted-foreground transition-colors duration-300">
+                <h3 className="text-lg font-medium mb-2 group-hover:text-[var(--ps-text)] transition-colors">
                         {page.title}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed">{page.description}</p>
+                <p className="text-[var(--ps-muted)] leading-relaxed text-sm mb-4">{page.description}</p>
                       <div className="space-y-2">
                         {page.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                    <div key={idx} className="flex items-center gap-2 text-sm text-[var(--ps-muted)]">
+                      <div className="w-1.5 h-1.5 bg-[var(--ps-primary)] rounded-full"></div>
                             {feature}
                           </div>
                         ))}
-                      </div>
                     </div>
                   </div>
                 ))}
-              </div>
             </div>
 
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">TECHNICAL FOUNDATION</div>
-              <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
-                <div className="p-6 border border-border rounded-lg">
-                  <h3 className="font-medium mb-4">Technology Stack</h3>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div>Next.js + Tailwind CSS for modern performance</div>
-                    <div>Image optimization and lazy loading</div>
-                    <div>Analytics integration and tracking</div>
-                    <div>SEO optimization and meta management</div>
-                  </div>
-                </div>
-                <div className="p-6 border border-border rounded-lg">
-                  <h3 className="font-medium mb-4">Performance & SEO</h3>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div>Local SEO: schema markup, GMB sync</div>
-                    <div>Core Web Vitals optimization</div>
-                    <div>Mobile accessibility compliance</div>
-                    <div>Fast loading times and smooth UX</div>
-                  </div>
+          {/* Technical Foundation */}
+          <div className="grid gap-6 lg:grid-cols-2 mt-8">
+            {pitchData.website.tech.map((tech, index) => (
+              <div key={index} className="p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+                <h3 className="font-medium mb-4">{tech.title}</h3>
+                <div className="space-y-2 text-sm text-[var(--ps-muted)]">
+                  {tech.features.map((feature, idx) => (
+                    <div key={idx}>{feature}</div>
+                  ))}
                 </div>
               </div>
+            ))}
+                  </div>
+
+          {/* Content Needs */}
+          <div className="mt-8 p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+            <h3 className="font-medium mb-4">Content We'll Need</h3>
+            <div className="grid gap-2 md:grid-cols-2">
+              {pitchData.website.contentNeeds.map((item, index) => (
+                <div key={index} className="flex items-center gap-2 text-sm text-[var(--ps-muted)]">
+                  <div className="w-1.5 h-1.5 bg-[var(--ps-primary)] rounded-full"></div>
+                  {item}
+                </div>
+              ))}
             </div>
           </div>
-        </section>
+        </Section>
 
-        <section
-          id="marketing"
-          ref={(el) => (sectionsRef.current[3] = el)}
-          className="min-h-screen py-20 sm:py-32 opacity-0"
-        >
-          <div className="space-y-12 sm:space-y-16">
-            <div className="space-y-6 sm:space-y-8">
-              <h2 className="text-3xl sm:text-4xl font-light">AI-Enabled Marketing</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+        {/* AI-Enabled Marketing */}
+        <Section id="marketing" title="AI-Enabled Marketing">
+          <p className="text-lg text-[var(--ps-muted)] leading-relaxed max-w-2xl">
                 Objectives: defend local search, grow word-of-mouth, and keep chairs full with timely content and gentle reminders.
               </p>
-            </div>
 
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">MARKETING PROGRAMS</div>
-              <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
-                {[
-                  {
-                    title: "Content Marketing System",
-                    description: "Monthly themes and weekly content calendar",
-                    features: ["Monthly content themes", "Weekly posts and reels", "UGC integration", "Brand consistency"]
-                  },
-                  {
-                    title: "Review & Referral Motion",
-                    description: "Automated review requests and referral incentives",
-                    features: ["Post-service review requests", "Referral program", "Loyalty incentives", "Social proof collection"]
-                  },
-                  {
-                    title: "Email & SMS Automation",
-                    description: "Personalized touchpoints throughout customer journey",
-                    features: ["Welcome sequences", "Appointment reminders", "Win-back campaigns", "Seasonal promotions"]
-                  },
-                  {
-                    title: "Paid Advertising",
-                    description: "Geo-fenced campaigns and offer-driven experiments",
-                    features: ["Local area targeting", "Seasonal offers", "Performance tracking", "A/B testing"]
-                  }
-                ].map((program, index) => (
+          {/* Marketing Programs */}
+          <div className="grid gap-6 lg:grid-cols-2">
+            {pitchData.marketing.programs.map((program, index) => (
                   <div
                     key={index}
-                    className="group p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
+                className="group p-6 border border-[var(--ps-border)] rounded-lg hover:border-[var(--ps-primary)]/50 transition-all duration-500 hover:shadow-lg bg-[var(--ps-surface)]"
                   >
-                    <div className="space-y-4">
-                      <h3 className="text-lg sm:text-xl font-medium group-hover:text-muted-foreground transition-colors duration-300">
+                <h3 className="text-lg font-medium mb-2 group-hover:text-[var(--ps-text)] transition-colors">
                         {program.title}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed">{program.description}</p>
-                      <div className="space-y-2">
+                <p className="text-[var(--ps-muted)] leading-relaxed text-sm mb-4">{program.description}</p>
+                <div className="space-y-2 mb-4">
                         {program.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                    <div key={idx} className="flex items-center gap-2 text-sm text-[var(--ps-muted)]">
+                      <div className="w-1.5 h-1.5 bg-[var(--ps-primary)] rounded-full"></div>
                             {feature}
                           </div>
                         ))}
                       </div>
-                    </div>
+                {program.cadence && (
+                  <div className="pt-3 border-t border-[var(--ps-border)]/50">
+                    <div className="text-xs text-[var(--ps-primary)] font-medium">Cadence</div>
+                    <div className="text-sm text-[var(--ps-muted)]">{program.cadence}</div>
                   </div>
-                ))}
+                )}
               </div>
+            ))}
             </div>
 
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">AI ASSISTANCE</div>
-              <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
-                <div className="p-6 border border-border rounded-lg">
-                  <h3 className="font-medium mb-4">Content Generation</h3>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div>On-brand captions and social media copy</div>
-                    <div>Personalized offer and promotion text</div>
-                    <div>Email newsletter content</div>
-                    <div>Review response drafts</div>
-                  </div>
-                </div>
-                <div className="p-6 border border-border rounded-lg">
-                  <h3 className="font-medium mb-4">Strategy & Analytics</h3>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div>Demand forecasting and calendar suggestions</div>
-                    <div>Customer segmentation and targeting</div>
-                    <div>Performance analytics and reporting</div>
-                    <div>ROI tracking and optimization insights</div>
-                  </div>
+          {/* AI Assistance */}
+          <div className="grid gap-6 lg:grid-cols-2 mt-8">
+            {pitchData.marketing.aiAssistance.map((ai, index) => (
+              <div key={index} className="p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+                <h3 className="font-medium mb-4">{ai.title}</h3>
+                <div className="space-y-2 text-sm text-[var(--ps-muted)]">
+                  {ai.features.map((feature, idx) => (
+                    <div key={idx}>{feature}</div>
+                  ))}
                 </div>
               </div>
+            ))}
             </div>
+
+          {/* Guardrails */}
+          <div className="mt-8 p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
+            <h3 className="font-medium mb-4">Privacy & Guardrails</h3>
+            <ul className="space-y-2 text-sm text-[var(--ps-muted)]">
+              {pitchData.guardrails.map((guardrail, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className="text-[var(--ps-primary)] mt-1">•</span>
+                  {guardrail}
+                </li>
+              ))}
+            </ul>
           </div>
-        </section>
+        </Section>
 
-        <section
-          id="enablement"
-          ref={(el) => (sectionsRef.current[4] = el)}
-          className="min-h-screen py-20 sm:py-32 opacity-0"
-        >
-          <div className="space-y-12 sm:space-y-16">
-            <div className="space-y-6 sm:space-y-8">
-              <h2 className="text-3xl sm:text-4xl font-light">AI Enablement</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+        {/* AI Assistants */}
+        <Section id="assistants" title="AI Assistants">
+          <p className="text-lg text-[var(--ps-muted)] leading-relaxed max-w-2xl">
                 Reduce routine admin and let the team focus on clients. Human-in-the-loop controls to keep quality high.
               </p>
-            </div>
 
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">AI ASSISTANTS</div>
-              <div className="grid gap-6 sm:gap-8">
-                {[
-                  {
-                    icon: "💬",
-                    title: "Customer Service Assistant",
-                    description: "Handles FAQs, booking inquiries, and basic customer support",
-                    capabilities: ["24/7 FAQ responses", "Booking triage", "Appointment scheduling", "Basic customer queries"]
-                  },
-                  {
-                    icon: "⭐",
-                    title: "Review Response Assistant",
-                    description: "Drafts personalized responses to customer reviews with approval workflow",
-                    capabilities: ["Review monitoring", "Response drafting", "Tone matching", "Approval queue"]
-                  },
-                  {
-                    icon: "📚",
-                    title: "Knowledge Base Assistant",
-                    description: "Maintains and provides access to policies, procedures, and staff information",
-                    capabilities: ["Policy documentation", "Staff onboarding", "Procedure updates", "Quick reference"]
-                  },
-                  {
-                    icon: "📊",
-                    title: "Operations Dashboard",
-                    description: "Simple insights into utilization, popular services, and operational metrics",
-                    capabilities: ["Utilization tracking", "Service popularity", "No-show analysis", "Revenue insights"]
-                  }
-                ].map((assistant, index) => (
-                  <div
-                    key={index}
-                    className="group p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
-                  >
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-4">
-                        <div className="text-2xl">{assistant.icon}</div>
-                        <div className="flex-1">
-                          <h3 className="text-lg sm:text-xl font-medium group-hover:text-muted-foreground transition-colors duration-300">
-                            {assistant.title}
-                          </h3>
-                          <p className="text-muted-foreground leading-relaxed mt-1">{assistant.description}</p>
-                        </div>
-                      </div>
-                      <div className="grid gap-2 sm:grid-cols-2">
-                        {assistant.capabilities.map((capability, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                            {capability}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="grid gap-6">
+            {pitchData.assistants.map((assistant, index) => (
+              <AssistantCard
+                key={assistant.id}
+                icon={assistant.icon}
+                title={assistant.title}
+                description={assistant.description}
+                bullets={assistant.bullets}
+                approvalPath={assistant.approvalPath}
+              />
+            ))}
           </div>
-        </section>
+        </Section>
 
-        <section
-          id="next"
-          ref={(el) => (sectionsRef.current[5] = el)}
-          className="py-20 sm:py-32 opacity-0"
-        >
-          <div className="space-y-12 sm:space-y-16">
-            <div className="space-y-6 sm:space-y-8">
-              <h2 className="text-3xl sm:text-4xl font-light">Next Steps</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+        {/* Next Steps */}
+        <Section id="next-steps" title="Next Steps">
+          <p className="text-lg text-[var(--ps-muted)] leading-relaxed max-w-2xl">
                 Ready to transform Andreas & Co with AI-enabled growth strategies? Let's get started.
               </p>
-            </div>
 
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">GET STARTED</div>
-              <div className="grid gap-6 sm:gap-8 lg:grid-cols-3">
+          <div className="grid gap-6 lg:grid-cols-3">
                 {[
                   {
                     step: "1",
@@ -521,78 +461,69 @@ export default function AndreasPitchPage() {
                 ].map((step, index) => (
                   <div
                     key={index}
-                    className="group p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
+                className="group p-6 border border-[var(--ps-border)] rounded-lg hover:border-[var(--ps-primary)]/50 transition-all duration-500 hover:shadow-lg bg-[var(--ps-surface)]"
                   >
                     <div className="space-y-4">
                       <div className="flex items-center gap-3">
-                        <div className="text-2xl font-light text-primary">{step.step}</div>
-                        <h3 className="text-lg sm:text-xl font-medium">{step.title}</h3>
+                    <div className="text-2xl font-light text-[var(--ps-primary)]">{step.step}</div>
+                    <h3 className="text-lg font-medium">{step.title}</h3>
                       </div>
-                      <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                  <p className="text-[var(--ps-muted)] leading-relaxed">{step.description}</p>
                       <div className="pt-2">
-                        <button className="text-sm text-primary hover:text-primary/80 transition-colors font-medium">
+                    <button className="text-sm text-[var(--ps-primary)] hover:text-[var(--ps-primary-weak)] transition-colors font-medium">
                           {step.action} →
                         </button>
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
             </div>
 
-            <div className="space-y-8">
-              <div className="text-sm text-muted-foreground font-mono">CONNECT</div>
-              <div className="flex flex-col sm:flex-row gap-4">
+          <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/contact"
-                  className="group flex items-center gap-3 text-foreground hover:text-muted-foreground transition-colors duration-300"
-                >
-                  <span className="text-base sm:text-lg">Book a discovery call</span>
-                  <svg
-                    className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
+              className="bg-[var(--ps-primary)] text-white rounded-md px-4 py-2 hover:bg-[var(--ps-primary-weak)] transition-colors"
+              onClick={() => handleCTAClick("consult")}
+            >
+              Book Discovery Call
+            </Link>
+            <Link
+              href="/pricing"
+              className="border border-[var(--ps-border)] rounded-md px-4 py-2 hover:bg-[var(--ps-surface)] transition-colors"
+              onClick={() => handleCTAClick("pricing")}
+            >
+              View Pricing Options
                 </Link>
                 <Link
-                  href="https://prairiesignal.ca"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  <span className="text-base sm:text-lg">Visit prairiesignal.ca</span>
-                  <svg
-                    className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
+              href="/pitch/print"
+              className="border border-[var(--ps-border)] rounded-md px-4 py-2 hover:bg-[var(--ps-surface)] transition-colors"
+              onClick={() => {
+                handleCTAClick("download-pdf");
+                if (typeof window !== "undefined" && window.plausible) {
+                  trackEvent("pitch_pdf_downloaded", { route: "/pitch/print" });
+                }
+              }}
+            >
+              Download PDF
                 </Link>
-              </div>
-            </div>
           </div>
-        </section>
+        </Section>
 
-        <footer className="py-12 sm:py-16 border-t border-border">
+        <footer className="py-12 sm:py-16 border-t border-[var(--ps-border)]">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 sm:gap-8">
             <div className="space-y-2">
-              <div className="text-sm text-muted-foreground">© 2025 PrairieSignal. All rights reserved.</div>
+              <div className="text-sm text-[var(--ps-muted)]">© 2025 PrairieSignal. All rights reserved.</div>
             </div>
 
             <div className="flex items-center gap-4">
               <button
                 onClick={toggleTheme}
-                className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300"
+                className="group p-3 rounded-lg border border-[var(--ps-border)] hover:border-[var(--ps-primary)]/50 transition-all duration-300"
                 aria-label="Toggle theme"
               >
                 {isDark ? (
                   <svg
-                    className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors duration-300"
+                    className="w-4 h-4 text-[var(--ps-muted)] group-hover:text-[var(--ps-text)] transition-colors duration-300"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -604,7 +535,7 @@ export default function AndreasPitchPage() {
                   </svg>
                 ) : (
                   <svg
-                    className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors duration-300"
+                    className="w-4 h-4 text-[var(--ps-muted)] group-hover:text-[var(--ps-text)] transition-colors duration-300"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -613,9 +544,9 @@ export default function AndreasPitchPage() {
                 )}
               </button>
 
-              <button className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300">
+              <button className="group p-3 rounded-lg border border-[var(--ps-border)] hover:border-[var(--ps-primary)]/50 transition-all duration-300">
                 <svg
-                  className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors duration-300"
+                  className="w-4 h-4 text-[var(--ps-muted)] group-hover:text-[var(--ps-text)] transition-colors duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -633,7 +564,13 @@ export default function AndreasPitchPage() {
         </footer>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none"></div>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd)
+        }}
+      />
     </div>
   )
 }

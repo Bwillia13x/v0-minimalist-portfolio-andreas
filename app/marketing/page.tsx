@@ -56,7 +56,7 @@ export default function MarketingPage() {
       <main className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16">
         <section
           id="marketing"
-          ref={(el) => (sectionsRef.current[0] = el)}
+          ref={(el) => { sectionsRef.current[0] = el; }}
           className="min-h-screen py-20 sm:py-32 opacity-0"
         >
           <div className="space-y-12 sm:space-y-16">
@@ -141,7 +141,7 @@ export default function MarketingPage() {
 
         <section
           id="timeline"
-          ref={(el) => (sectionsRef.current[1] = el)}
+          ref={(el) => { sectionsRef.current[1] = el; }}
           className="min-h-screen py-20 sm:py-32 opacity-0"
         >
           <div className="space-y-12 sm:space-y-16">
@@ -231,7 +231,7 @@ export default function MarketingPage() {
 
         <section
           id="content"
-          ref={(el) => (sectionsRef.current[2] = el)}
+          ref={(el) => { sectionsRef.current[2] = el; }}
           className="min-h-screen py-20 sm:py-32 opacity-0"
         >
           <div className="space-y-12 sm:space-y-16">
@@ -295,7 +295,7 @@ export default function MarketingPage() {
 
         <section
           id="samples"
-          ref={(el) => (sectionsRef.current[3] = el)}
+          ref={(el) => { sectionsRef.current[3] = el; }}
           className="py-20 sm:py-32 opacity-0"
         >
           <div className="space-y-12 sm:space-y-16">
