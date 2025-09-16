@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { Section } from "@/components/Section"
 import { CapabilityCard } from "@/components/CapabilityCard"
@@ -65,7 +66,7 @@ export default function Home() {
           className="min-h-screen flex items-center opacity-0"
         >
           <div className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]">
-            <img src="/hero-dark-gold.svg" alt="PrairieSignal AI Enablement background" className="w-full h-full object-cover opacity-60" />
+            <Image src="/hero-dark-gold.svg" alt="" fill className="w-full h-full object-cover opacity-60" priority />
           </div>
           <div className="grid lg:grid-cols-5 gap-12 sm:gap-16 w-full">
             <div className="lg:col-span-3 space-y-6 sm:space-y-8">
@@ -120,7 +121,7 @@ export default function Home() {
 
                 {/* Trust line */}
                 <div className="text-sm text-[var(--ps-muted)] pt-2">
-                  Calgary small-business friendly • PIPEDA/PIPA aware
+                  Calgary small‑business friendly • PIPEDA/PIPA aware
                 </div>
 
                 {/* Status badges */}
@@ -173,7 +174,7 @@ export default function Home() {
                 chips: ["Personalization", "Smart Timing", "Risk Assessment"],
                 example: (
                   <div>
-                    Sarah missed her haircut last month. AI suggests texting her Tuesday at 2 PM with: "Hi Sarah, it's Andreas at Andreas & Co. We have your regular Tuesday slot free next week at 2 PM. Want me to hold it?"
+                    Sarah missed her haircut last month. AI suggests texting her Tuesday at 2 PM with: &ldquo;Hi Sarah, it&rsquo;s Andreas at Andreas & Co. We have your regular Tuesday slot free next week at 2 PM. Want me to hold it?&rdquo;
                   </div>
                 )
               },
@@ -206,7 +207,7 @@ export default function Home() {
                 chips: ["Respectful Outreach", "Opt-out Protection", "Personalized Messaging"],
                 example: (
                   <div>
-                    Mike hasn't been in for 8 weeks. At 10 AM on Wednesday: "Hi Mike, it's Andreas at Andreas & Co. We miss seeing you! Would you like to book your next appointment?" (Client can reply 'STOP' anytime to opt out)
+                    Mike hasn&rsquo;t been in for 8 weeks. At 10 AM on Wednesday: &ldquo;Hi Mike, it&rsquo;s Andreas at Andreas & Co. We miss seeing you! Would you like to book your next appointment?&rdquo; (Client can reply &#39;STOP&#39; anytime to opt out)
                   </div>
                 )
               },
@@ -434,13 +435,16 @@ export default function Home() {
                 {[
                   { name: "Email", handle: "hello@prairiesignal.ca", url: "mailto:hello@prairiesignal.ca", icon: "✉️" },
                   { name: "Website", handle: "prairiesignal.ca", url: "https://prairiesignal.ca", icon: "🌐" },
-                  { name: "LinkedIn", handle: "PrairieSignal", url: "#", icon: "💼" },
+                  { name: "LinkedIn", handle: "PrairieSignal", url: "https://www.linkedin.com/company/prairiesignal", icon: "💼" },
                   { name: "Demo", handle: "Live Preview", url: "/demo", icon: "🎬" },
                 ].map((social) => (
                   <Link
                     key={social.name}
                     href={social.url}
                     className="group p-4 border border-[var(--ps-border)] rounded-lg hover:border-[var(--ps-primary)]/50 transition-all duration-500 hover:shadow-sm"
+                    target={social.url.startsWith('http') ? '_blank' : undefined}
+                    rel={social.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    aria-label={`${social.name}: ${social.handle}`}
                   >
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
