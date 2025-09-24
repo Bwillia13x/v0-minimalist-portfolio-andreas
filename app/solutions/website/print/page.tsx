@@ -99,7 +99,7 @@ export default function WebsitePrint() {
 
         {/* Content Needs */}
         <section className="space-y-4">
-          <h2 className="text-xl font-medium border-b border-gray-200 pb-2">Content We'll Need</h2>
+          <h2 className="text-xl font-medium border-b border-gray-200 pb-2">Content We&apos;ll Need</h2>
           <div className="grid grid-cols-2 gap-4">
             {[
               "Logo/SVG files",

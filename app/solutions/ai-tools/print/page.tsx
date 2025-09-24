@@ -13,7 +13,7 @@ export default function AIToolsPrint() {
 
         {/* Categories Overview */}
         <section className="space-y-4">
-          <h2 className="text-xl font-medium border-b border-gray-200 pb-2">What's Included</h2>
+          <h2 className="text-xl font-medium border-b border-gray-200 pb-2">What&rsquo;s Included</h2>
           <div className="grid grid-cols-2 gap-6">
             {[
               {

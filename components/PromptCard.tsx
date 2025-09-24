@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { trackEvent } from '@/components/Analytics'
 import type { PromptEntry } from '@/data/prompt-pack'
 
@@ -49,11 +49,11 @@ export function PromptCard({ entry, showOptOut = true }: PromptCardProps) {
   }
 
   // Handle ESC key to close modal
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape' && showVariableModal) {
       setShowVariableModal(false)
     }
-  }
+  }, [showVariableModal])
 
   // Add/remove event listener for ESC key
   useEffect(() => {
@@ -61,7 +61,8 @@ export function PromptCard({ entry, showOptOut = true }: PromptCardProps) {
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [showVariableModal])
+    return () => undefined
+  }, [showVariableModal, handleKeyDown])
 
   const VariableModal = () => {
     const [replacements, setReplacements] = useState<Record<string, string>>({})
@@ -173,7 +174,7 @@ export function PromptCard({ entry, showOptOut = true }: PromptCardProps) {
               />
               <span>add opt-out</span>
               <span id="opt-out-help" className="sr-only">
-                Include "Reply STOP to opt out" text in the SMS prompt
+                Include &ldquo;Reply STOP to opt out&rdquo; text in the SMS prompt
               </span>
             </label>
           )}

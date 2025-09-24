@@ -191,7 +191,7 @@ export default function PitchPrint() {
 
           {/* Content Needs */}
           <div className="card" style={{ marginTop: '1rem' }}>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '1rem' }}>Content We'll Need</h3>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '1rem' }}>Content We&apos;ll Need</h3>
             <div className="grid-2">
               {pitchData.website.contentNeeds.map((item, index) => (
                 <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#666' }}>

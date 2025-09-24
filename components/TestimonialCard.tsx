@@ -17,7 +17,7 @@ export function TestimonialCard({
         {role} • {city}
       </div>
       <blockquote className="text-[var(--ps-text)] leading-relaxed mb-4 italic">
-        "{quote}"
+        &ldquo;{quote}&rdquo;
       </blockquote>
       <div className="text-sm font-medium text-[var(--ps-primary)]">
         {metric}

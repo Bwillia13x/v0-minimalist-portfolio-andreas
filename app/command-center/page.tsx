@@ -99,16 +99,14 @@ export default function CommandCenterPage() {
                 <div className="rounded-lg border border-border p-6">
                   <div className="text-sm text-muted-foreground font-mono mb-2">DENTAL PRACTICE • CALGARY</div>
                   <p className="text-sm text-muted-foreground mb-3 italic">
-                    "The Command Center processes 200 appointments weekly. We've reduced no-shows by 35% and
-                    the AI suggestions are getting better every week."
+                    &ldquo;The Command Center processes 200 appointments weekly. We&rsquo;ve reduced no-shows by 35% and the AI suggestions are getting better every week.&rdquo;
                   </p>
                   <div className="text-xs text-muted-foreground">$8,400 monthly revenue recovered</div>
                 </div>
                 <div className="rounded-lg border border-border p-6">
                   <div className="text-sm text-muted-foreground font-mono mb-2">MEDICAL CLINIC • EDMONTON</div>
                   <p className="text-sm text-muted-foreground mb-3 italic">
-                    "Setup took 2 days and the results were immediate. The confidence scoring helps us prioritize
-                    our most valuable patients."
+                    &ldquo;Setup took 2 days and the results were immediate. The confidence scoring helps us prioritize our most valuable patients.&rdquo;
                   </p>
                   <div className="text-xs text-muted-foreground">40% improvement in rebooking rate</div>
                 </div>
@@ -357,7 +355,11 @@ export default function CommandCenterPage() {
                 )}
               </button>
 
-              <button className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300">
+              <button
+                className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300"
+                aria-label="Toggle conversation panel"
+              >
+                <span className="sr-only">Toggle conversation panel</span>
                 <svg
                   className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors duration-300"
                   fill="none"

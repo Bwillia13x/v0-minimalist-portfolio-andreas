@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { trackEvent } from "@/components/Analytics"
 
 interface TocItem {
@@ -16,6 +16,7 @@ interface TocSpyProps {
 export function TocSpy({ containerId = "toc-content" }: TocSpyProps) {
   const [tocItems, setTocItems] = useState<TocItem[]>([])
   const [activeId, setActiveId] = useState<string>("")
+  const activeIdRef = useRef<string>("")
 
   useEffect(() => {
     // Find all headings in the main content area
@@ -30,6 +31,7 @@ export function TocSpy({ containerId = "toc-content" }: TocSpyProps) {
       }))
 
     setTocItems(items)
+    const itemLookup = new Map(items.map(item => [item.id, item]))
 
     // Set up intersection observer for scrollspy
     const observer = new IntersectionObserver(
@@ -37,10 +39,11 @@ export function TocSpy({ containerId = "toc-content" }: TocSpyProps) {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const newActiveId = entry.target.id
-            if (activeId !== newActiveId) {
+            if (activeIdRef.current !== newActiveId) {
+              activeIdRef.current = newActiveId
               setActiveId(newActiveId)
               // Track section views
-              const currentItem = items.find(item => item.id === newActiveId)
+              const currentItem = itemLookup.get(newActiveId)
               trackEvent('section_view', {
                 section_id: newActiveId,
                 section_title: currentItem?.title
@@ -59,7 +62,10 @@ export function TocSpy({ containerId = "toc-content" }: TocSpyProps) {
       observer.observe(heading)
     })
 
-    return () => observer.disconnect()
+    return () => {
+      headings.forEach((heading) => observer.unobserve(heading))
+      observer.disconnect()
+    }
   }, [])
 
   const scrollToSection = (id: string) => {
@@ -83,10 +89,7 @@ export function TocSpy({ containerId = "toc-content" }: TocSpyProps) {
             activeId === item.id
               ? 'text-primary font-medium'
               : 'text-muted-foreground'
-          }`}
-          style={{
-            paddingLeft: `${(item.level - 1) * 12}px` // Indent based on heading level
-          }}
+          } ${item.level > 1 ? `pl-${(item.level - 1) * 3}` : ''}`}
         >
           <span className={`inline-block w-2 h-2 rounded-full mr-2 flex-shrink-0 ${
             activeId === item.id ? 'bg-primary' : 'bg-muted-foreground/50'

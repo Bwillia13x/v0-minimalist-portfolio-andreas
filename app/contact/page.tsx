@@ -117,16 +117,14 @@ export default function ContactPage() {
                 <div className="rounded-lg border border-border p-6">
                   <div className="text-sm text-muted-foreground font-mono mb-2">BARBERSHOP OWNER • CALGARY</div>
                   <p className="text-sm text-muted-foreground mb-3 italic">
-                    "The team understood our business immediately. They didn't try to sell us something we didn't need,
-                    just helped us identify the highest-impact opportunities."
+                    &ldquo;The team understood our business immediately. They didn&rsquo;t try to sell us something we didn&rsquo;t need, just helped us identify the highest-impact opportunities.&rdquo;
                   </p>
                   <div className="text-xs text-muted-foreground">Result: 40% reduction in no-shows</div>
                 </div>
                 <div className="rounded-lg border border-border p-6">
                   <div className="text-sm text-muted-foreground font-mono mb-2">SALON MANAGER • EDMONTON</div>
                   <p className="text-sm text-muted-foreground mb-3 italic">
-                    "Finally found someone who speaks our language. No tech jargon, just practical solutions
-                    that work in a busy barbershop."
+                    &ldquo;Finally found someone who speaks our language. No tech jargon, just practical solutions that work in a busy barbershop.&rdquo;
                   </p>
                   <div className="text-xs text-muted-foreground">Result: $800/month additional revenue</div>
                 </div>
@@ -191,7 +189,7 @@ export default function ContactPage() {
                   <h3 className="font-medium mb-3">Do you only work with barbershops?</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     We specialize in barbershops and salons, but our automation approach works for any service business
-                    with appointments and customer communication. We've helped spas, dental offices, and fitness studios.
+                    with appointments and customer communication. We&rsquo;ve helped spas, dental offices, and fitness studios.
                   </p>
                 </div>
 
@@ -204,10 +202,9 @@ export default function ContactPage() {
                 </div>
 
                 <div className="rounded-lg border border-border p-6">
-                  <h3 className="font-medium mb-3">What if we're not technical?</h3>
+                  <h3 className="font-medium mb-3">What if we&rsquo;re not technical?</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    That's perfectly fine! We handle all technical setup and provide training. Our solutions are designed
-                    for busy owners who don't have time for complex technology.
+                    That&rsquo;s perfectly fine! We handle all technical setup and provide training. Our solutions are designed for busy owners who don&rsquo;t have time for complex technology.
                   </p>
                 </div>
               </div>
@@ -250,7 +247,11 @@ export default function ContactPage() {
                 )}
               </button>
 
-              <button className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300">
+              <button
+                className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300"
+                aria-label="Toggle conversation panel"
+              >
+                <span className="sr-only">Toggle conversation panel</span>
                 <svg
                   className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors duration-300"
                   fill="none"

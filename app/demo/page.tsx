@@ -145,7 +145,7 @@ export default function DemoPage() {
                         <td className="border border-border p-2">58 days</td>
                         <td className="border border-border p-2">Low (15)</td>
                         <td className="border border-border p-2">Tue 2-3 PM</td>
-                        <td className="border border-border p-2">"Hi Sarah, it's Andreas..."</td>
+                        <td className="border border-border p-2">&ldquo;Hi Sarah, it&rsquo;s Andreas...&rdquo;</td>
                         <td className="border border-border p-2 text-green-600 font-medium">92</td>
                       </tr>
                       <tr>
@@ -155,7 +155,7 @@ export default function DemoPage() {
                         <td className="border border-border p-2">32 days</td>
                         <td className="border border-border p-2">Medium (45)</td>
                         <td className="border border-border p-2">Wed 10-11 AM</td>
-                        <td className="border border-border p-2">"Hi Mike, it's Andreas..."</td>
+                        <td className="border border-border p-2">&ldquo;Hi Mike, it&rsquo;s Andreas...&rdquo;</td>
                         <td className="border border-border p-2 text-yellow-600 font-medium">78</td>
                       </tr>
                       <tr>
@@ -479,7 +479,11 @@ export default function DemoPage() {
                 )}
               </button>
 
-              <button className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300">
+              <button
+                className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300"
+                aria-label="Toggle conversation panel"
+              >
+                <span className="sr-only">Toggle conversation panel</span>
                 <svg
                   className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors duration-300"
                   fill="none"

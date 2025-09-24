@@ -70,7 +70,7 @@ export function PromptSearch({ onChange }: PromptSearchProps) {
       {(query || filters.length > 0) && (
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span>Active filters:</span>
-          {query && <span className="text-primary">"{query}"</span>}
+          {query && <span className="text-primary">&ldquo;{query}&rdquo;</span>}
           {filters.length > 0 && (
             <span>
               {filters.map(f => (

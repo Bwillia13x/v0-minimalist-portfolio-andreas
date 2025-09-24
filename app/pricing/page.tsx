@@ -86,14 +86,14 @@ export default function PricingPage() {
                 <div className="rounded-lg border border-border p-6">
                   <div className="text-sm text-muted-foreground font-mono mb-2">BARBERSHOP OWNER</div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    "Pilot B paid for itself in 6 weeks. We went from chasing 40% of no-shows to proactively rebooking them."
+                    &ldquo;Pilot B paid for itself in 6 weeks. We went from chasing 40% of no-shows to proactively rebooking them.&rdquo;
                   </p>
                   <div className="text-xs text-muted-foreground">Calgary, AB • 3 months in</div>
                 </div>
                 <div className="rounded-lg border border-border p-6">
                   <div className="text-sm text-muted-foreground font-mono mb-2">SALON MANAGER</div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    "The rebooking SMS alone saved us $800/month. Clients love the personal touch."
+                    &ldquo;The rebooking SMS alone saved us $800/month. Clients love the personal touch.&rdquo;
                   </p>
                   <div className="text-xs text-muted-foreground">Edmonton, AB • 4 months in</div>
                 </div>
@@ -284,7 +284,7 @@ export default function PricingPage() {
               <h2 className="text-2xl font-light">Frequently Asked Questions</h2>
               <div className="space-y-6">
                 <div className="rounded-lg border border-border p-6">
-                  <h3 className="font-medium mb-3">What's included in pass-through billing?</h3>
+                  <h3 className="font-medium mb-3">What&rsquo;s included in pass-through billing?</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     API costs for AI services and third-party integrations. We pass these through at cost with no markup.
                     Typical monthly cost: $50–200 depending on usage volume and AI model selection.
@@ -300,10 +300,10 @@ export default function PricingPage() {
                 </div>
 
                 <div className="rounded-lg border border-border p-6">
-                  <h3 className="font-medium mb-3">What if I'm not technical?</h3>
+                  <h3 className="font-medium mb-3">What if I&rsquo;m not technical?</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     No problem! Most clients are surprised at how non-technical our solutions are. We handle all the
-                    setup and provide simple training. You'll be up and running within a day, with full support during your pilot.
+                    setup and provide simple training. You&rsquo;ll be up and running within a day, with full support during your pilot.
                   </p>
                 </div>
 
@@ -391,7 +391,11 @@ export default function PricingPage() {
                 )}
               </button>
 
-              <button className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300">
+              <button
+                className="group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300"
+                aria-label="Toggle conversation panel"
+              >
+                <span className="sr-only">Toggle conversation panel</span>
                 <svg
                   className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors duration-300"
                   fill="none"

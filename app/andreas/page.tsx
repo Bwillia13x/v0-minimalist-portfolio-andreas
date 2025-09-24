@@ -142,6 +142,12 @@ export default function AndreasPitchPage() {
                 >
                   Book Discovery Call
                 </Link>
+                <Link
+                  href="/andreas/findings"
+                  className="border border-[var(--ps-primary)] rounded-md px-4 py-2 text-[var(--ps-primary)] hover:bg-[var(--ps-primary)] hover:text-white transition-colors"
+                >
+                  Audit Findings
+                </Link>
               </div>
             </div>
           </div>
@@ -186,6 +192,21 @@ export default function AndreasPitchPage() {
               <p className="text-sm text-[var(--ps-muted)]">
                 Fewer no-shows, steadier bookings, faster responses, and clear Monday-morning insights.
               </p>
+            </div>
+
+            {/* Audit Findings CTA */}
+            <div className="p-6 border border-[var(--ps-primary)]/40 rounded-lg bg-[var(--ps-surface)]">
+              <h3 className="font-medium mb-2 text-[var(--ps-text)]">Website Audit Findings</h3>
+              <p className="text-sm text-[var(--ps-muted)] mb-4">
+                Brief ownership on the latest site audit: critical issues, backlog, and the 14-day plan ready to action.
+              </p>
+              <Link
+                href="/andreas/findings"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[var(--ps-primary)] hover:text-[var(--ps-primary-weak)] transition-colors"
+              >
+                View Audit Findings
+                <span aria-hidden>↗</span>
+              </Link>
             </div>
           </div>
 
@@ -337,7 +358,7 @@ export default function AndreasPitchPage() {
 
           {/* Content Needs */}
           <div className="mt-8 p-6 border border-[var(--ps-border)] rounded-lg bg-[var(--ps-surface)]">
-            <h3 className="font-medium mb-4">Content We'll Need</h3>
+            <h3 className="font-medium mb-4">Content We&apos;ll Need</h3>
             <div className="grid gap-2 md:grid-cols-2">
               {pitchData.website.contentNeeds.map((item, index) => (
                 <div key={index} className="flex items-center gap-2 text-sm text-[var(--ps-muted)]">
@@ -435,7 +456,7 @@ export default function AndreasPitchPage() {
         {/* Next Steps */}
         <Section id="next-steps" title="Next Steps">
           <p className="text-lg text-[var(--ps-muted)] leading-relaxed max-w-2xl">
-                Ready to transform Andreas & Co with AI-enabled growth strategies? Let's get started.
+                Ready to transform Andreas & Co with AI-enabled growth strategies? Let&apos;s get started.
               </p>
 
           <div className="grid gap-6 lg:grid-cols-3">
@@ -544,7 +565,11 @@ export default function AndreasPitchPage() {
                 )}
               </button>
 
-              <button className="group p-3 rounded-lg border border-[var(--ps-border)] hover:border-[var(--ps-primary)]/50 transition-all duration-300">
+              <button
+                className="group p-3 rounded-lg border border-[var(--ps-border)] hover:border-[var(--ps-primary)]/50 transition-all duration-300"
+                aria-label="Toggle conversation panel"
+              >
+                <span className="sr-only">Toggle conversation panel</span>
                 <svg
                   className="w-4 h-4 text-[var(--ps-muted)] group-hover:text-[var(--ps-text)] transition-colors duration-300"
                   fill="none"
