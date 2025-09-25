@@ -11,16 +11,16 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: "summary", label: "Summary", href: "#summary" },
-  { id: "roadmap", label: "Roadmap", href: "#roadmap" },
-  { id: "website", label: "Website", href: "#website" },
-  { id: "marketing", label: "Marketing", href: "#marketing" },
-  { id: "assistants", label: "AI Assistants", href: "#assistants" },
+  { id: "overview", label: "Overview", href: "#overview" },
+  { id: "audit", label: "Audit", href: "#audit" },
+  { id: "plan", label: "Plan", href: "#plan" },
+  { id: "solution-stack", label: "Solution", href: "#solution-stack" },
+  { id: "value", label: "Value", href: "#value" },
   { id: "next-steps", label: "Next Steps", href: "#next-steps" },
 ];
 
 export function PitchSubnav() {
-  const [activeSection, setActiveSection] = useState("summary");
+  const [activeSection, setActiveSection] = useState("overview");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
