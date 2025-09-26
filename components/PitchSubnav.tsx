@@ -11,16 +11,20 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: "overview", label: "Overview", href: "#overview" },
-  { id: "audit", label: "Audit", href: "#audit" },
-  { id: "plan", label: "Plan", href: "#plan" },
-  { id: "solution-stack", label: "Solution", href: "#solution-stack" },
-  { id: "value", label: "Value", href: "#value" },
-  { id: "next-steps", label: "Next Steps", href: "#next-steps" },
+  { id: "agenda", label: "Agenda", href: "#agenda" },
+  { id: "why-this-matters", label: "Why this matters", href: "#why-this-matters" },
+  { id: "deliverables", label: "What we'll deliver", href: "#deliverables" },
+  { id: "scope-1", label: "Scope 1", href: "#scope-1" },
+  { id: "scope-2", label: "Scope 2", href: "#scope-2" },
+  { id: "scope-3", label: "Scope 3", href: "#scope-3" },
+  { id: "timeline", label: "Timeline", href: "#timeline" },
+  { id: "success", label: "Success", href: "#success" },
+  { id: "faqs", label: "FAQs", href: "#faqs" },
+  { id: "proof", label: "Reference", href: "#proof" },
 ];
 
 export function PitchSubnav() {
-  const [activeSection, setActiveSection] = useState("overview");
+  const [activeSection, setActiveSection] = useState(navItems[0]?.id ?? "");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -42,11 +46,14 @@ export function PitchSubnav() {
 
     // Show/hide based on scroll position
     const handleScroll = () => {
-      const summarySection = document.getElementById("summary");
-      if (summarySection) {
-        const rect = summarySection.getBoundingClientRect();
-        setIsVisible(rect.bottom < 0); // Show after summary section is scrolled past
+      const firstSection = document.getElementById(navItems[0]?.id ?? "");
+      if (!firstSection) {
+        setIsVisible(window.scrollY > 200);
+        return;
       }
+
+      const rect = firstSection.getBoundingClientRect();
+      setIsVisible(rect.top <= 0);
     };
 
     window.addEventListener("scroll", handleScroll);
